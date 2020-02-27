@@ -28,7 +28,7 @@ import {ColumnValueType} from '../eventQueryParams';
 import DraggableColumns, {
   DRAGGABLE_COLUMN_CLASSNAME_IDENTIFIER,
 } from './draggableColumns';
-import {generateEventDetailsRoute, generateEventSlug} from '../eventDetails/utils';
+import {generateEventSlug, eventDetailsRouteWithEventView} from '../eventDetails/utils';
 
 export type TableViewProps = {
   location: Location;
@@ -223,16 +223,14 @@ class TableView extends React.Component<TableViewProps> {
     if (isHeader) {
       return [<StyledIconStack key="header-icon" src="icon-stack" size="14px" />];
     }
-    const {organization, location} = this.props;
+    const {organization, eventView} = this.props;
     const eventSlug = generateEventSlug(dataRow);
-    const pathname = generateEventDetailsRoute({
+
+    const target = eventDetailsRouteWithEventView({
       orgSlug: organization.slug,
       eventSlug,
+      eventView,
     });
-    const target = {
-      pathname,
-      query: {...location.query},
-    };
 
     return [
       <Tooltip key={`eventlink${rowIndex}`} title={t('View Details')}>
